@@ -23,25 +23,35 @@ type DatabaseConfig struct {
 var AppCfg AppConfig
 var DBCfg DatabaseConfig
 
+func GetEnvValue(key, Defaultvalue string) string {
+	value := os.Getenv(key)
+	if value == "" {
+		return Defaultvalue
+	}
+	return value
+}
+
 func LoadEnv() error {
 	err := godotenv.Load()
 	if err != nil {
 		return fmt.Errorf("error loading .env file: %w", err)
 	}
-	fmt.Println("Loading environment variables")
 
 	AppCfg = AppConfig{
-		APP_PORT: os.Getenv("APP_PORT"),
+		APP_PORT: GetEnvValue("APP_PORT", "8080"),
 	}
 
 	DBCfg = DatabaseConfig{
-		DB_HOST:     os.Getenv("DB_HOST"),
-		DB_USER:     os.Getenv("DB_USER"),
-		DB_PASSWORD: os.Getenv("DB_PASSWORD"),
-		DB_NAME:     os.Getenv("DB_NAME"),
-		DB_PORT:     os.Getenv("DB_PORT"),
-		DB_SSLMODE:  os.Getenv("DB_SSLMODE"),
+		DB_HOST:     GetEnvValue("DB_HOST", "localhost"),
+		DB_USER:     GetEnvValue("DB_USER", "postgres"),
+		DB_PASSWORD: GetEnvValue("DB_PASSWORD", "postgres"),
+		DB_NAME:     GetEnvValue("DB_NAME", "postgres"),
+		DB_PORT:     GetEnvValue("DB_PORT", "5432"),
+		DB_SSLMODE:  GetEnvValue("DB_SSLMODE", "postgres"),
 	}
 
+	fmt.Println("Loading environment variables")
+	fmt.Println(AppCfg)
+	fmt.Println(DBCfg)
 	return nil
 }

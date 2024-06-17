@@ -1,0 +1,15 @@
+services:
+  database:
+    container_name: postgres_database
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/data/postgres
+
+volumes:
+  postgres:
