@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Jonatas00/GO-anime-list/internal/config"
+	"github.com/Jonatas00/GO-CRUD/internal/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

@@ -1,4 +1,4 @@
-module github.com/Jonatas00/GO-anime-list
+module github.com/Jonatas00/GO-CRUD
 
 go 1.22.2
 
