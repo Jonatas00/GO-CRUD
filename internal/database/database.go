@@ -1,26 +1,30 @@
 package database
 
 import (
+	"database/sql"
 	"fmt"
-	"log"
+
+	_ "github.com/lib/pq"
 
 	"github.com/Jonatas00/GO-CRUD/internal/config"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
-
-func Connect() {
+func Connect() (*sql.DB, error) {
 	var connectionString = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
-		config.DBCfg.DB_HOST, config.DBCfg.DB_USER, config.DBCfg.DB_PASSWORD,
-		config.DBCfg.DB_NAME, config.DBCfg.DB_PORT, config.DBCfg.DB_SSLMODE,
+		config.DBCfg.Host, config.DBCfg.User, config.DBCfg.Password,
+		config.DBCfg.Name, config.DBCfg.Port, config.DBCfg.SslMode,
 	)
 
-	db, err := gorm.Open(postgres.Open(connectionString), &gorm.Config{})
+	db, err := sql.Open("postgres", connectionString)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	DB = db
+	err = db.Ping()
+	if err != nil {
+		db.Close()
+		return nil, err
+	}
+
+	return db, nil
 }
